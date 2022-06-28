@@ -10,6 +10,7 @@ import {
 } from "type-graphql";
 import { UserRole } from "../entity/Users";
 import { Users } from "../entity/Users";
+import { CreateUser, GetUsers, UpdateUser } from "../services/users/Users";
 
 registerEnumType(UserRole, {
   name: "type_user",
@@ -17,7 +18,7 @@ registerEnumType(UserRole, {
 });
 
 @InputType()
-class UserInput {
+export class UserInput {
   @Field()
   user_name!: string;
   @Field()
@@ -30,10 +31,12 @@ class UserInput {
   type_user!: UserRole;
   @Field()
   email!: string;
+  @Field()
+  pass!: string;
 }
 
 @InputType()
-class UserUpdateInput {
+export class UserUpdateInput {
   @Field(() => String, { nullable: true })
   user_name?: string;
   @Field(() => String, { nullable: true })
@@ -46,14 +49,16 @@ class UserUpdateInput {
   type_user?: UserRole;
   @Field(() => String, { nullable: true })
   email?: string;
+  @Field(() => String, { nullable: true })
+  pass?: string;
 }
 
 @Resolver()
 export class UsersResolver {
   @Mutation(() => Users)
   async CreateUser(@Arg("variables", () => UserInput) variables: UserInput) {
-    const createUser = Users.create(variables);
-    return await createUser.save();
+    const user = await CreateUser(variables);
+    return user;
   }
 
   @Mutation(() => Users)
@@ -61,8 +66,7 @@ export class UsersResolver {
     @Arg("id", () => Int) id: number,
     @Arg("fields", () => UserUpdateInput) fields: UserUpdateInput
   ) {
-    await Users.update(id, fields);
-    const user = await Users.findOne({ where: { user_id: id } });
+    const user = await UpdateUser(id, fields);
     return user;
   }
 
@@ -74,7 +78,7 @@ export class UsersResolver {
   //   }
 
   @Query(() => [Users])
-  GetUsers() {
-    return Users.find();
+  async GetUsers() {
+    return await GetUsers();
   }
 }

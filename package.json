@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.ts",
+  "workspaces": [
+    "src/resolvers/*",
+    "src/services/*"
+  ],
   "scripts": {
     "dev": "nodemon src/index.ts --exec ts-node"
   },

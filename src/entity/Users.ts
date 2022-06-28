@@ -51,4 +51,8 @@ export class Users extends BaseEntity {
   @Field()
   @Column("varchar", { length: 50 })
   email!: string;
+
+  @Field()
+  @Column("varchar", { length: 50 })
+  pass!: string;
 }

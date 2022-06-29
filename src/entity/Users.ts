@@ -7,12 +7,6 @@ import {
 } from "typeorm";
 import { Field, ObjectType } from "type-graphql";
 
-export enum UserRole {
-  ADMIN = "ADMIN",
-  USER = "USER",
-  ROOT = "ROOT",
-}
-
 @ObjectType()
 @Entity()
 export class Users extends BaseEntity {
@@ -26,7 +20,7 @@ export class Users extends BaseEntity {
 
   @Field()
   @Column("varchar", { length: 20 })
-  fist_name!: string;
+  first_name!: string;
 
   @Field()
   @Column("varchar", { length: 20 })
@@ -41,12 +35,8 @@ export class Users extends BaseEntity {
   active!: boolean;
 
   @Field()
-  @Column({
-    type: "enum",
-    enum: UserRole,
-    default: UserRole.USER,
-  })
-  user_type!: UserRole;
+  @Column("varchar", { length: 10 })
+  user_type!: string;
 
   @Field()
   @Column("varchar", { length: 50 })

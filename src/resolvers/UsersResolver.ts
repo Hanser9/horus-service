@@ -8,9 +8,14 @@ import {
   Field,
   Int,
 } from "type-graphql";
-import { UserRole } from "../entity/Users";
 import { Users } from "../entity/Users";
 import { CreateUser, GetUsers, UpdateUser } from "../services/users/Users";
+
+export enum UserRole {
+  ADMIN = "ADMIN",
+  USER = "USER",
+  ROOT = "ROOT",
+}
 
 registerEnumType(UserRole, {
   name: "type_user",
@@ -22,13 +27,13 @@ export class UserInput {
   @Field()
   user_name!: string;
   @Field()
-  fist_name!: string;
+  first_name!: string;
   @Field()
   last_name!: string;
   @Field()
   active!: boolean;
   @Field((type) => UserRole)
-  type_user!: UserRole;
+  user_type!: UserRole;
   @Field()
   email!: string;
   @Field()
@@ -40,13 +45,13 @@ export class UserUpdateInput {
   @Field(() => String, { nullable: true })
   user_name?: string;
   @Field(() => String, { nullable: true })
-  fist_name?: string;
+  first_name?: string;
   @Field(() => String, { nullable: true })
   last_name?: string;
   @Field(() => Boolean, { nullable: true })
   active?: boolean;
   @Field((type) => UserRole, { nullable: true })
-  type_user?: UserRole;
+  user_type?: UserRole;
   @Field(() => String, { nullable: true })
   email?: string;
   @Field(() => String, { nullable: true })
